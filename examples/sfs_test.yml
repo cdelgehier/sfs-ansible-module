@@ -1,0 +1,53 @@
+---
+- name: "Test SFS"
+  hosts: localhost
+  gather_facts: false
+  vars:
+    org: "{{ lookup('env', 'ORG') }}"
+    context: "{{ lookup('env', 'CONTEXT') }}"
+    remote_file_name: "{{ lookup('env', 'RFILE') }}"
+
+  tasks:
+
+    - name: "Push file to test context"
+      sfs:
+        org: "{{ org }}"
+        context: "{{ context }}"
+        local_file_path: /Users/cedricd/git/perso/sfs-ansible-module/meta
+        # remote_file_name: foo.zip
+
+    - name: "List contexts"
+      sfs:
+        method: list_contexts
+        org: "{{ org }}"
+        # user: myuser
+        # password: "my password"
+        # url:  secure-file-service.local
+
+    - name: "List files in a context"
+      sfs:
+        method: list_files
+        org: "{{ org }}"
+        context: "{{ context }}"
+        # user: myuser
+        # password: "my password"
+        # url:  secure-file-service.local
+
+    - name: "Get a file in a context"
+      sfs:
+        method: get
+        org: "{{ org }}"
+        context: "{{ context }}"
+        remote_file_name: "{{ remote_file_name }}"
+        local_file_path: /tmp
+        # user: myuser
+        # password: "my password"
+        # url:  secure-file-service.local
+
+    - name: "Delete a file from a context"
+      sfs:
+        method: delete
+        org: "{{ org }}"
+        context: "{{ context }}"
+        remote_file_name: test.zip
+...
